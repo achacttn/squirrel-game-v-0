@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="MercData" format=3 uid="uid://d4kj5wf5peqdv"]
+
+[ext_resource type="Script" uid="uid://femofkrxivju" path="res://data/merc_data.gd" id="1_rasic"]
+
+[resource]
+script = ExtResource("1_rasic")
+metadata/_custom_type_script = "uid://femofkrxivju"

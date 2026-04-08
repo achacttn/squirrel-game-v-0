@@ -1,8 +1,13 @@
 [gd_scene format=3 uid="uid://c51sl42v4covq"]
 
+[ext_resource type="Script" uid="uid://m42s7x4sp8u0" path="res://scenes/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://bnlkijnnk6qxe" path="res://scenes/grid.tscn" id="1_o5qli"]
 
 [node name="Main" type="Node2D" unique_id=729022806]
+script = ExtResource("1_0wfyh")
 
-[node name="Grid" parent="." unique_id=604157284 instance=ExtResource("1_o5qli")]
-position = Vector2(200, 150)
+[node name="PlayerGrid" parent="." instance=ExtResource("1_o5qli")]
+position = Vector2(50, 200)
+
+[node name="EnemyGrid" parent="." instance=ExtResource("1_o5qli")]
+position = Vector2(500, 200)
