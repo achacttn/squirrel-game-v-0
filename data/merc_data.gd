@@ -13,6 +13,7 @@ extends Resource
 # === Identity ===
 @export var merc_name: String = ""
 @export_multiline var description: String = ""
+@export var icon: Texture2D   # Placeholder art — load from res://assets/icons/
 
 # === Weapon ===
 # Determines the targeting pattern when attacking the enemy grid.

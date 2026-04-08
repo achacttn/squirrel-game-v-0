@@ -17,8 +17,7 @@ var is_alive: bool = true
 var is_main_character: bool = false
 var is_guarding: bool = false  # 50% dmg reduction + crit immunity until next activation
 
-# Visual — just a colored rectangle for now, same as cells.
-# Later replaced with merc sprites/art.
+var icon_sprite: Sprite2D
 var label: Label
 
 func _ready():
@@ -29,17 +28,37 @@ func _initialize():
 	current_hp = data.max_hp
 	current_ap = data.starting_ap
 
-	# Create a simple label showing the merc's name and HP.
-	# This is temporary prototype UI — enough to see what's on the grid.
+	# Icon — displayed if the merc has one, centered in the cell
+	if data.icon:
+		icon_sprite = Sprite2D.new()
+		icon_sprite.texture = data.icon
+		# Scale icon to fit within the cell (80x80 area, leaving margin)
+		var tex_size = data.icon.get_size()
+		var target_size = 60.0
+		var scale_factor = target_size / max(tex_size.x, tex_size.y)
+		icon_sprite.scale = Vector2(scale_factor, scale_factor)
+		icon_sprite.position = Vector2(0, -10)  # nudge up to make room for text below
+		icon_sprite.z_index = 1
+		add_child(icon_sprite)
+
+	# Text label — shows name, HP, AP below the icon
 	label = Label.new()
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.position = Vector2(-45, -45)
-	label.size = Vector2(90, 90)
-	label.add_theme_font_size_override("font_size", 11)
+	label.add_theme_font_size_override("font_size", 9)
 	label.add_theme_color_override("font_color", Color.BLACK)
-	# z_index ensures the label renders on top of the cell's ColorRect
 	label.z_index = 1
+
+	if data.icon:
+		# Compact label below icon
+		label.position = Vector2(-45, 15)
+		label.size = Vector2(90, 40)
+	else:
+		# Full cell label (fallback when no icon)
+		label.position = Vector2(-45, -45)
+		label.size = Vector2(90, 90)
+		label.add_theme_font_size_override("font_size", 11)
+
 	add_child(label)
 	_update_label()
 

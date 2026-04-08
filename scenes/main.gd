@@ -428,7 +428,7 @@ func _update_info():
 func _update_state_label(text: String):
 	state_label.text = text
 
-func _make_merc(merc_name: String, weapon: MercData.WeaponType, hp: int, atk: int, def: int, spd_min: int, spd_max: int) -> MercData:
+func _make_merc(merc_name: String, weapon: MercData.WeaponType, hp: int, atk: int, def: int, spd_min: int, spd_max: int, icon_path: String = "") -> MercData:
 	var data = MercData.new()
 	data.merc_name = merc_name
 	data.weapon_type = weapon
@@ -437,4 +437,6 @@ func _make_merc(merc_name: String, weapon: MercData.WeaponType, hp: int, atk: in
 	data.def = def
 	data.spd_min = spd_min
 	data.spd_max = spd_max
+	if icon_path != "":
+		data.icon = load(icon_path)
 	return data
