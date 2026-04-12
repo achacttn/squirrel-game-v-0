@@ -11,3 +11,4 @@ position = Vector2(50, 200)
 
 [node name="EnemyGrid" parent="." instance=ExtResource("1_o5qli")]
 position = Vector2(500, 200)
+mirrored = true

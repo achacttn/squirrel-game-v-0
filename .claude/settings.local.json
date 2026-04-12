@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip3 install:*)",
+      "Bash(ls /Users/scottlee/Personal/squirrel-game-v-0/assets/icons/*.png)"
+    ]
+  }
+}

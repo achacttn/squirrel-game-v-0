@@ -7,6 +7,8 @@ const CELL_GAP = 4
 const ROWS = 3
 const COLS = 3
 
+@export var mirrored := false  # When true, row order is flipped so front row is at top
+
 # Emitted when a cell is clicked during gameplay — Main listens for this
 # to process actions (attack, guard, swap, etc.)
 signal cell_clicked_for_action(cell)
@@ -25,9 +27,11 @@ func _build_grid():
 		for col in COLS:
 			var cell = CellScene.instantiate()
 
+			# When mirrored, flip row order so front row (row 2) renders at top
+			var visual_row = (ROWS - 1 - row) if mirrored else row
 			cell.position = Vector2(
 				col * (CELL_SIZE + CELL_GAP),
-				row * (CELL_SIZE + CELL_GAP)
+				visual_row * (CELL_SIZE + CELL_GAP)
 			)
 
 			cell.set_meta("grid_pos", Vector2i(row, col))
@@ -93,6 +97,9 @@ func show_targets(target_positions: Array[Vector2i]):
 
 # Clear all target highlights
 func clear_targets():
+	if selected_cell:
+		selected_cell.set_selected(false)
+		selected_cell = null
 	for row in cells:
 		for cell in row:
 			cell.set_targeted(false)
