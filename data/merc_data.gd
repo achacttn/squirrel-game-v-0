@@ -17,9 +17,9 @@ extends Resource
 
 # === Weapon ===
 # Determines the targeting pattern when attacking the enemy grid.
-# Sword = single target, Spear = 2 in a row, Gun = full row,
-# Cannon = cross (+), etc.
-enum WeaponType { SWORD, SPEAR, GUN, CANNON, STAFF, BOW }
+# Sword = single target, Axe = full row, Spear = 2 in a column,
+# Gun = full column, Cannon = cross (+), etc.
+enum WeaponType { SWORD, SPEAR, GUN, CANNON, STAFF, BOW, AXE }
 @export var weapon_type: WeaponType = WeaponType.SWORD
 
 # === Core Stats ===

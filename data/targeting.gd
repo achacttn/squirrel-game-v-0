@@ -30,7 +30,10 @@ static func get_valid_targets(weapon: MercData.WeaponType, attacker_pos: Vector2
 			# Can target any column — will hit front + mid in that column
 			return [Vector2i(2, 0), Vector2i(2, 1), Vector2i(2, 2)]
 		MercData.WeaponType.GUN:
-			# Can target any row — will hit all 3 cells in that row
+			# Can target any column — will hit all 3 cells in that column (shoots through ranks)
+			return [Vector2i(2, 0), Vector2i(2, 1), Vector2i(2, 2)]
+		MercData.WeaponType.AXE:
+			# Can target any row — will hit all 3 cells in that row (horizontal sweep)
 			return [Vector2i(0, col), Vector2i(1, col), Vector2i(2, col)]
 		MercData.WeaponType.CANNON:
 			# Can target any cell — cross pattern radiates from chosen cell
@@ -58,7 +61,10 @@ static func get_hit_cells(weapon: MercData.WeaponType, chosen_target: Vector2i) 
 			# Hits front + mid row in the chosen column
 			return [Vector2i(2, col), Vector2i(1, col)]
 		MercData.WeaponType.GUN:
-			# Hits the entire row of the chosen cell
+			# Hits the entire column of the chosen cell (shoots through front → mid → back)
+			return [Vector2i(0, col), Vector2i(1, col), Vector2i(2, col)]
+		MercData.WeaponType.AXE:
+			# Hits the entire row of the chosen cell (horizontal sweep)
 			return [Vector2i(row, 0), Vector2i(row, 1), Vector2i(row, 2)]
 		MercData.WeaponType.CANNON:
 			# Cross/plus pattern centered on chosen cell
