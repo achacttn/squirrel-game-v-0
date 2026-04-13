@@ -39,15 +39,15 @@ var game_over_label: Label
 
 func _ready():
 	# === Player 1 mercs (left grid) ===
-	var swordsman  = _make_merc("Swordsman",  MercData.WeaponType.SWORD,  120, 500, 8,  60, 80, "res://assets/icons/swordsman.png")  # ATK boosted for testing
-	var axeman     = _make_merc("Axeman",     MercData.WeaponType.SWORD,  140, 18, 10, 45, 60, "res://assets/icons/axeman.png")
-	var shielder   = _make_merc("Shielder",   MercData.WeaponType.SWORD,  160, 8,  14, 50, 70, "res://assets/icons/shielder.png")
-	var spearman   = _make_merc("Spearman",   MercData.WeaponType.SPEAR,  100, 12, 6,  70, 90, "res://assets/icons/spearman.png")
-	var staffmage  = _make_merc("Staffmage",  MercData.WeaponType.STAFF,   80, 22, 3,  75, 95, "res://assets/icons/sorcerer.png")
-	var bowman     = _make_merc("Bowman",      MercData.WeaponType.BOW,     85, 14, 4,  80, 100, "res://assets/icons/archer.png")
-	var gunslinger = _make_merc("Gunslinger", MercData.WeaponType.GUN,     60, 20, 3,  85, 105, "res://assets/icons/gunslinger.png")
-	var cannon     = _make_merc("Cannoneer",  MercData.WeaponType.CANNON,  80, 25, 4,  45, 65, "res://assets/icons/cannoneer.png")
-	var healer     = _make_merc("Healer",     MercData.WeaponType.STAFF,   70, 5,  3,  90, 110, "res://assets/icons/healer.png")
+	var swordsman  = load("res://data/mercs/swordsman.tres")
+	var axeman     = load("res://data/mercs/axeman.tres")
+	var shielder   = load("res://data/mercs/shielder.tres")
+	var spearman   = load("res://data/mercs/spearman.tres")
+	var bowman     = load("res://data/mercs/bowman.tres")
+	var gunslinger = load("res://data/mercs/gunslinger.tres")
+	var staffmage  = load("res://data/mercs/staffmage.tres")
+	var cannoneer  = load("res://data/mercs/cannoneer.tres")
+	var healer     = load("res://data/mercs/healer.tres")
 
 	# Front row (row 2) — melee
 	grid_p1.place_merc_at(2, 0, swordsman, true)
@@ -59,32 +59,32 @@ func _ready():
 	grid_p1.place_merc_at(1, 2, gunslinger)
 	# Back row (row 0) — magic/support
 	grid_p1.place_merc_at(0, 0, staffmage)
-	grid_p1.place_merc_at(0, 1, cannon)
+	grid_p1.place_merc_at(0, 1, cannoneer)
 	grid_p1.place_merc_at(0, 2, healer)
 
 	# === Player 2 mercs (right grid) ===
-	var e_knight    = _make_merc("Knight",      MercData.WeaponType.SWORD,  130, 14, 9,  55, 75,  "res://assets/icons/dualblade.png")
-	var e_berserker = _make_merc("Berserker",   MercData.WeaponType.SWORD,  100, 22, 4,  70, 90,  "res://assets/icons/berserker.png")
-	var e_paladin   = _make_merc("Paladin",     MercData.WeaponType.SWORD,  150, 15, 12, 40, 60,  "res://assets/icons/paladin.png")
-	var e_pirate    = _make_merc("Pirate",      MercData.WeaponType.GUN,     75, 16, 2,  90, 110, "res://assets/icons/pirate.png")
-	var e_chariot   = _make_merc("Chariot",     MercData.WeaponType.BOW,     80, 12, 5,  75, 95,  "res://assets/icons/chariot-supporter.png")
-	var e_poseidon  = _make_merc("Poseidon",    MercData.WeaponType.SPEAR,   95, 18, 6,  70, 90,  "res://assets/icons/poseidon.png")
-	var e_priest    = _make_merc("Priest",      MercData.WeaponType.STAFF,   65, 4,  3,  95, 115, "res://assets/icons/priest.png")
-	var e_puppet    = _make_merc("Puppet",      MercData.WeaponType.STAFF,   65, 10, 2,  80, 100, "res://assets/icons/puppet.png")
-	var e_heretic   = _make_merc("Heretic",     MercData.WeaponType.STAFF,   60, 24, 2,  85, 105, "res://assets/icons/heretic.png")
+	var knight    = load("res://data/mercs/knight.tres")
+	var berserker = load("res://data/mercs/berserker.tres")
+	var paladin   = load("res://data/mercs/paladin.tres")
+	var pirate    = load("res://data/mercs/pirate.tres")
+	var chariot   = load("res://data/mercs/chariot.tres")
+	var poseidon  = load("res://data/mercs/poseidon.tres")
+	var priest    = load("res://data/mercs/priest.tres")
+	var puppet    = load("res://data/mercs/puppet.tres")
+	var heretic   = load("res://data/mercs/heretic.tres")
 
 	# Front row (row 2) — melee
-	grid_p2.place_merc_at(2, 0, e_knight, true)
-	grid_p2.place_merc_at(2, 1, e_berserker)
-	grid_p2.place_merc_at(2, 2, e_paladin)
+	grid_p2.place_merc_at(2, 0, knight, true)
+	grid_p2.place_merc_at(2, 1, berserker)
+	grid_p2.place_merc_at(2, 2, paladin)
 	# Mid row (row 1) — agi
-	grid_p2.place_merc_at(1, 0, e_pirate)
-	grid_p2.place_merc_at(1, 1, e_chariot)
-	grid_p2.place_merc_at(1, 2, e_poseidon)
+	grid_p2.place_merc_at(1, 0, pirate)
+	grid_p2.place_merc_at(1, 1, chariot)
+	grid_p2.place_merc_at(1, 2, poseidon)
 	# Back row (row 0) — magic/support
-	grid_p2.place_merc_at(0, 0, e_priest)
-	grid_p2.place_merc_at(0, 1, e_puppet)
-	grid_p2.place_merc_at(0, 2, e_heretic)
+	grid_p2.place_merc_at(0, 0, priest)
+	grid_p2.place_merc_at(0, 1, puppet)
+	grid_p2.place_merc_at(0, 2, heretic)
 
 	# Turn managers — one per player
 	tm_p1 = TurnManager.new()
@@ -434,15 +434,3 @@ func _update_info():
 func _update_state_label(text: String):
 	state_label.text = text
 
-func _make_merc(merc_name: String, weapon: MercData.WeaponType, hp: int, atk: int, def: int, spd_min: int, spd_max: int, icon_path: String = "") -> MercData:
-	var data = MercData.new()
-	data.merc_name = merc_name
-	data.weapon_type = weapon
-	data.max_hp = hp
-	data.atk = atk
-	data.def = def
-	data.spd_min = spd_min
-	data.spd_max = spd_max
-	if icon_path != "":
-		data.icon = load(icon_path)
-	return data

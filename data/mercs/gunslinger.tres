@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MercData" format=3]
+
+[ext_resource type="Script" path="res://data/merc_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/icons/gunslinger.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+merc_name = "Gunslinger"
+icon = ExtResource("2_icon")
+weapon_type = 2
+max_hp = 60
+atk = 20
+def = 3
+spd_min = 85
+spd_max = 105

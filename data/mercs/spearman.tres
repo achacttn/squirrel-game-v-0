@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MercData" format=3]
+
+[ext_resource type="Script" path="res://data/merc_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/icons/spearman.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+merc_name = "Spearman"
+icon = ExtResource("2_icon")
+weapon_type = 1
+max_hp = 100
+atk = 12
+def = 6
+spd_min = 70
+spd_max = 90

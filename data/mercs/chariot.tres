@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MercData" format=3]
+
+[ext_resource type="Script" path="res://data/merc_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/icons/chariot-supporter.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+merc_name = "Chariot"
+icon = ExtResource("2_icon")
+weapon_type = 5
+max_hp = 80
+atk = 12
+def = 5
+spd_min = 75
+spd_max = 95

@@ -33,7 +33,6 @@ enum WeaponType { SWORD, SPEAR, GUN, CANNON, STAFF, BOW }
 @export var crit_dmg: float = 1.5      # Critical hit damage multiplier
 @export var acc: float = 0.95          # Accuracy / hit chance (0.0 to 1.0)
 @export var eva: float = 0.05          # Evasion chance (0.0 to 1.0)
-@export var armor: float = 0.0         # Damage reduction percentage (0.0 to 1.0)
 @export var magic: float = 0.0         # Magic damage and resistance multiplier (for elemental attacks, etc.)
 
 # === AP ===

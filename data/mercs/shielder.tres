@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MercData" format=3]
+
+[ext_resource type="Script" path="res://data/merc_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/icons/shielder.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+merc_name = "Shielder"
+icon = ExtResource("2_icon")
+weapon_type = 0
+max_hp = 160
+atk = 8
+def = 14
+spd_min = 50
+spd_max = 70

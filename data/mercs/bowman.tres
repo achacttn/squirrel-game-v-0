@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MercData" format=3]
+
+[ext_resource type="Script" path="res://data/merc_data.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/icons/archer.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+merc_name = "Bowman"
+icon = ExtResource("2_icon")
+weapon_type = 5
+max_hp = 85
+atk = 14
+def = 4
+spd_min = 80
+spd_max = 100
