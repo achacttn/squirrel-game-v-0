@@ -12,6 +12,8 @@ const COLS = 3
 # Emitted when a cell is clicked during gameplay — Main listens for this
 # to process actions (attack, guard, swap, etc.)
 signal cell_clicked_for_action(cell)
+signal cell_hovered_for_action(cell)
+signal cell_unhovered_for_action(cell)
 
 var selected_cell: Area2D = null
 
@@ -36,6 +38,8 @@ func _build_grid():
 
 			cell.set_meta("grid_pos", Vector2i(row, col))
 			cell.cell_clicked.connect(_on_cell_clicked)
+			cell.cell_hovered.connect(_on_cell_hovered)
+			cell.cell_unhovered.connect(_on_cell_unhovered)
 			add_child(cell)
 			row_array.append(cell)
 		cells.append(row_array)
@@ -123,6 +127,83 @@ func get_swap_targets(pos: Vector2i) -> Array[Vector2i]:
 			if Vector2i(row, col) != pos and cells[row][col].has_merc():
 				targets.append(Vector2i(row, col))
 	return targets
+
+func _on_cell_hovered(cell):
+	cell_hovered_for_action.emit(cell)
+
+func _on_cell_unhovered(cell):
+	cell_unhovered_for_action.emit(cell)
+
+# Resolve valid attack targets based on weapon type and grid state.
+# Returns positions of cells the player can click to aim at.
+func get_valid_targets(weapon: MercData.WeaponType, attacker_pos: Vector2i) -> Array[Vector2i]:
+	var targets: Array[Vector2i] = []
+
+	match weapon:
+		MercData.WeaponType.SWORD:
+			# Frontmost alive merc per column
+			for col in COLS:
+				var front = _frontmost_alive(col)
+				if front >= 0:
+					targets.append(Vector2i(front, col))
+		MercData.WeaponType.SPEAR:
+			# Frontmost alive merc per column (spear pierces 2 deep from that point)
+			for col in COLS:
+				var front = _frontmost_alive(col)
+				if front >= 0:
+					targets.append(Vector2i(front, col))
+		MercData.WeaponType.AXE:
+			# Any row that has at least one alive merc
+			for row in ROWS:
+				for col in COLS:
+					if cells[row][col].has_merc():
+						targets.append(Vector2i(row, attacker_pos.y))
+						break
+		MercData.WeaponType.GUN:
+			# Any column that has at least one alive merc
+			for col in COLS:
+				if _frontmost_alive(col) >= 0:
+					targets.append(Vector2i(2, col))
+		MercData.WeaponType.CANNON:
+			# Any cell with an alive merc
+			targets = _all_alive_cells()
+		MercData.WeaponType.STAFF:
+			# Any cell with an alive merc
+			targets = _all_alive_cells()
+		MercData.WeaponType.BOW:
+			# Any cell with an alive merc
+			targets = _all_alive_cells()
+
+	return targets
+
+# Returns the row of the frontmost alive merc in a column (row 2 first, then 1, then 0).
+# Returns -1 if no alive merc in that column.
+func _frontmost_alive(col: int) -> int:
+	for row in range(ROWS - 1, -1, -1):  # 2, 1, 0
+		if cells[row][col].has_merc():
+			return row
+	return -1
+
+# Returns positions of all cells with alive mercs.
+func _all_alive_cells() -> Array[Vector2i]:
+	var alive: Array[Vector2i] = []
+	for row in ROWS:
+		for col in COLS:
+			if cells[row][col].has_merc():
+				alive.append(Vector2i(row, col))
+	return alive
+
+# Show hit preview (orange) for the cells that would be damaged
+func show_hit_preview(positions: Array[Vector2i]):
+	clear_hit_preview()
+	for pos in positions:
+		if pos.x >= 0 and pos.x < ROWS and pos.y >= 0 and pos.y < COLS:
+			cells[pos.x][pos.y].set_hit_preview(true)
+
+func clear_hit_preview():
+	for row in cells:
+		for cell in row:
+			cell.set_hit_preview(false)
 
 # Swap the mercs in two cells
 func swap_mercs(pos_a: Vector2i, pos_b: Vector2i):

@@ -95,9 +95,13 @@ func _ready():
 	tm_p2.grid = grid_p2
 	add_child(tm_p2)
 
-	# Both grids can emit clicks — we handle them based on whose turn it is
+	# Both grids can emit clicks and hovers — we handle them based on whose turn it is
 	grid_p1.cell_clicked_for_action.connect(_on_grid_p1_clicked)
 	grid_p2.cell_clicked_for_action.connect(_on_grid_p2_clicked)
+	grid_p1.cell_hovered_for_action.connect(_on_grid_p1_hovered)
+	grid_p2.cell_hovered_for_action.connect(_on_grid_p2_hovered)
+	grid_p1.cell_unhovered_for_action.connect(_on_grid_unhovered)
+	grid_p2.cell_unhovered_for_action.connect(_on_grid_unhovered)
 
 	_setup_ui()
 	_start_player_turn(1)
@@ -323,6 +327,8 @@ func _on_target_grid_clicked(cell):
 	if not cell.is_targeted:
 		return
 
+	target_grid.clear_hit_preview()
+
 	var chosen_pos = cell.get_meta("grid_pos")
 	var hit_cells = Targeting.get_hit_cells(active_merc.data.weapon_type, chosen_pos)
 
@@ -364,6 +370,7 @@ func _cancel_action():
 	current_state = State.IDLE
 	action_panel.visible = false
 	target_grid.clear_targets() if target_grid else null
+	target_grid.clear_hit_preview() if target_grid else null
 	active_grid.clear_swap_targets() if active_grid else null
 	if active_grid and active_grid.selected_cell:
 		active_grid.selected_cell.set_selected(false)
@@ -374,7 +381,7 @@ func _on_attack_pressed():
 	if not active_merc:
 		return
 	var attacker_pos = active_cell.get_meta("grid_pos")
-	var valid_targets = Targeting.get_valid_targets(active_merc.data.weapon_type, attacker_pos)
+	var valid_targets = target_grid.get_valid_targets(active_merc.data.weapon_type, attacker_pos)
 	target_grid.show_targets(valid_targets)
 	current_state = State.TARGETING_ATTACK
 	action_panel.visible = false
@@ -384,8 +391,9 @@ func _on_guard_pressed():
 	if not active_merc:
 		return
 	active_merc.set_guard()
+	active_merc.spend_ap(50)
 	print("P%d: %s guards!" % [current_player, active_merc.data.merc_name])
-	_commit_action()
+	active_tm.use_action(active_merc)
 
 func _on_swap_pressed():
 	if not active_merc:
@@ -434,3 +442,22 @@ func _update_info():
 func _update_state_label(text: String):
 	state_label.text = text
 
+# === Hover hit preview ===
+
+func _on_grid_p1_hovered(cell):
+	if current_state == State.TARGETING_ATTACK and current_player == 2:
+		_show_hover_preview(cell)
+
+func _on_grid_p2_hovered(cell):
+	if current_state == State.TARGETING_ATTACK and current_player == 1:
+		_show_hover_preview(cell)
+
+func _show_hover_preview(cell):
+	if not cell.is_targeted:
+		return
+	var chosen_pos = cell.get_meta("grid_pos")
+	var hit_cells = Targeting.get_hit_cells(active_merc.data.weapon_type, chosen_pos)
+	target_grid.show_hit_preview(hit_cells)
+
+func _on_grid_unhovered(_cell):
+	target_grid.clear_hit_preview() if target_grid else null

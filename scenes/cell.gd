@@ -1,6 +1,8 @@
 extends Area2D
 
 signal cell_clicked(cell)
+signal cell_hovered(cell)
+signal cell_unhovered(cell)
 
 const COLOR_DEFAULT = Color(0.9, 0.9, 0.9)
 const COLOR_HOVER = Color(0.7, 0.85, 1.0)
@@ -8,12 +10,14 @@ const COLOR_SELECTED = Color(0.3, 0.6, 1.0)
 const COLOR_EMPTY = Color(0.4, 0.4, 0.4)        # darker grey for empty cells
 const COLOR_AVAILABLE = Color(0.6, 1.0, 0.6)    # green — merc can act this turn
 const COLOR_UNAVAILABLE = Color(0.7, 0.7, 0.7)  # dim — merc can't act this turn
-const COLOR_TARGETED = Color(1.0, 0.4, 0.4)     # red — this cell will be hit
+const COLOR_TARGETED = Color(1.0, 0.6, 0.3)     # orange — this cell can be clicked to attack
+const COLOR_HIT_PREVIEW = Color(1.0, 0.4, 0.4)  # red — this cell will be hit on confirm
 const COLOR_SWAP_TARGET = Color(1.0, 0.85, 0.3) # yellow — valid swap target
 
 var is_selected := false
 var is_available := false  # whether this cell's merc can act this turn
 var is_targeted := false   # whether this cell is being targeted by an attack
+var is_hit_preview := false # whether this cell is in the hit preview (hover)
 var is_swap_target := false # whether this cell is a valid swap destination
 
 # The merc occupying this cell (null if empty)
@@ -30,10 +34,12 @@ func _ready():
 func _on_mouse_entered():
 	if not is_selected:
 		color_rect.color = COLOR_HOVER
+	cell_hovered.emit(self)
 
 func _on_mouse_exited():
 	if not is_selected:
 		_update_default_color()
+	cell_unhovered.emit(self)
 
 func _on_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -80,10 +86,16 @@ func set_swap_target(swap: bool):
 	is_swap_target = swap
 	_update_default_color()
 
+func set_hit_preview(preview: bool):
+	is_hit_preview = preview
+	_update_default_color()
+
 func _update_default_color():
 	if is_selected:
 		return
-	if is_targeted:
+	if is_hit_preview:
+		color_rect.color = COLOR_HIT_PREVIEW
+	elif is_targeted:
 		color_rect.color = COLOR_TARGETED
 	elif is_swap_target:
 		color_rect.color = COLOR_SWAP_TARGET
